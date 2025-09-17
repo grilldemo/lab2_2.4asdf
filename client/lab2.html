@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+
+    <head>
+        <title>lab 2.1</title>
+
+        <link rel="stylesheet" href="css/lab2.css">
+        <style>
+             .form-group {
+                padding-top: 5px;
+                padding-bottom: 15px;
+            }
+
+            .form_med {
+                width: 10%;
+                float: left;
+                clear: left;
+                margin-right: 1%;
+                padding-top: 7px;
+                text-align: right;
+                font-size: 22px;
+            }
+
+            .form-control {
+                float: left;
+                clear: right;
+                font-size: 22px;
+                display: block;
+                margin-bottom: 10px;
+                line-height: 1.5;
+                color: #333333;
+                border: 2px solid #ccc;
+            }
+
+
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="js/lab2.js" async></script>
+    </head>
+    
+    
+    <body>
+        <main>
+            <section>
+                <div style="margin-left:10%; font-size: 50px;">my webpage</div>
+           
+                <div class="link-container">
+                    <a class="link"href="">link 1</a>
+                    <a class="link"href="">link 2</a>
+                    <a class="link"href="">link 3</a>
+                    <a class="link"href="">link 4</a>
+                </div>
+           
+            </section>
+            
+            <section>
+                <div style="color:blue;font-size: 24px;margin: 20px 0px 20px 0px;">
+                    webage test.
+                </div>
+                <div>
+                    <form>
+                        <div class="form-group">
+                            <label class="form_med" for="input1">input 1</label>
+                            <input class="form-control" name="input1" id="input1">
+                        </div>
+                         <div class="form-group">
+                            <label class="form_med" for="input2">input 2</label>
+                            <input class="form-control" name="input2" id="input2">
+                        </div>
+                        <div class="form-group">
+                            <label class="form_med" for="input3">input 3</label>
+                            <input class="form-control" name="input3" id="input3">
+                        </div>
+                        <div class="button-container">
+                            <div class="config-buttons">
+                                <button class="edit_btn"id="summit">summit</button>
+                            </div>
+                            <div class="config-buttons">
+                                <button class="edit_btn" id="clear">clear</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+
+
+
+    </body>
+
+
+
+</html>
