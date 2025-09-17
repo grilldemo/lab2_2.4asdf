@@ -8,9 +8,9 @@ submitbutton.addEventListener("click",function(event){
     var second = secondttextbox.value; 
     var third = $('#input3').val(); 
 
-    console.log("first: ",first);
-    console.log("second: ",second);
-    console.log("third: ",third);
+    console.log("first: ",frst);
+    console.log("second: ",seond);
+    console.log("third: ",tird);
 
     alert(first +"\n"+second+"\n"+third);
     
