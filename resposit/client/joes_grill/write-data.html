@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/joes.css">
+        <script src='js/write-data.js' async></script>
+    </head>
+    <body>
+        <main>
+            <section class = "image">>
+                <div>
+                  
+                </div>
+                <div class="title">joes grill</div>
+                
+            </section>
+            <section>
+                <div class="linkes">
+                    <a style="margin-right:5%;margin-left:30%;" href="joes_grill.html">Home</a>
+                    <a style="margin-right:5%;" href="write-data.html">Enter Data</a>
+                    <a style="margin-right:5%;" href="view-data.html">View Data</a>
+                    <a style="margin-right:5%;" href="">Browse Data</a>
+                </div>
+                <div>
+
+                    <div>
+                        name  
+                        <input id="b111">
+                    </div>
+                    <div>
+                        test  
+                        <input id="b222">
+                    </div>
+                    <div>
+                        test  
+                        <input id="b333">
+                    </div>
+                    <div>
+                        test  
+                        <input id="b444">
+                    </div>
+                    <div>
+                        test  
+                        <input id="b555">
+                    </div>
+                    <div>
+                        <button onclick="sendData1()">
+                            summit
+                        </button>
+                        <button>
+                            clear
+                        </button>
+                    </div>
+                </div>
+                <script>
+                    function sendData1(){
+                        var string1 =document.getElementById("b111").value;
+                        var string2 =document.getElementById("b222").value;
+                        var string3 =document.getElementById("b333").value;
+                        var string4 =document.getElementById("b444").value;
+                        var string5 =document.getElementById("b555").value;
+                        sendData(string1,string2,string3,string4,string5);
+                    }
+
+
+                </script>
+            </section>
+        </main>
+    </body>
+</html>
