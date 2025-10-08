@@ -1,7 +1,7 @@
 
 var dataset ='[{ "name":"coke","price":"1.99","calorie":"50","rating":"4.5","purchesed":"140"},{ "name":"steak","price":"20.00","calorie":"500","rating":"4.0","purchesed":"30"},{ "name":"chicken breast","price":"14.99","calorie":"600","rating":"4.7","purchesed":"29"},{ "name":"grilled aspargus","price":"5.99","calorie":"100","rating":"3.7","purchesed":"50"},{ "name":"burger","price":"10.99","calorie":"400","rating":"4.9","purchesed":"70"}]';
 
-var jsonObj = JSON.parse(dataset);
+const jsonObj = JSON.parse(dataset);
 
 var t1="name";
 var t2="price";
