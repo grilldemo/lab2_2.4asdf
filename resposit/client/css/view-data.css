@@ -1,0 +1,25 @@
+title{
+    text-align: center;
+    font-size: 60px;
+    margin-top: 60px;
+}
+.linkes{
+    font-size: 24px;
+    background-color: red;
+   
+}
+.image{
+    background-image: url("../images/betgrilledit1.png");
+}
+.test{
+    text-align: center;
+    font-size: 16px;
+    margin-top: 30px;
+	margin-bottom: 30px;
+    margin-left: 8%;
+}
+.tabletitle{
+    text-align: center;
+    font-size: 30px;
+    margin-left: 30%;
+}

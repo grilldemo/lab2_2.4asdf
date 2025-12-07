@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/browse-data.css">
+    
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src='js/config.js' ></script>
+        <script src='js/browse-data.js' async></script>
+    </head>
+    <body>
+        <main>
+            <section class = "image">>
+                <div>
+                  
+                </div>
+                <div class="title">joes grill</div>
+                
+            </section>
+            <section>
+                <div class="linkes">
+                    <a style="margin-right:5%;margin-left:30%;" href="/">Home</a>
+                    <a style="margin-right:5%;" href="/write-data">Enter Data</a>
+                    <a style="margin-right:5%;" href="/view-data">View Data</a>
+                    <a style="margin-right:5%;" href="/browse-data">Browse Data</a>
+                </div>
+                <div ng-app="browseDataApp" ng-controller="browseDataControler">
+                    <div style="padding-left: 40%; font-size: 30px;">
+                        <label for="name">Name:</label>
+                        <label style="margin-left: 30px;" id="name">{{obj.name}}</label>
+                    </div>
+                    <div style="padding-left: 40%; font-size: 30px;">
+                        <label for="name">Price:</label>
+                        <label style="margin-left: 30px;" id="price">{{obj.price}}</label>
+                    </div>
+                    <div style="padding-left: 40%; font-size: 30px;">
+                        <label for="name">Calories:</label>
+                        <label style="margin-left: 30px;" id="calorie">{{obj.calorie}}</label>
+                    </div>
+                    <div style="padding-left: 40%; font-size: 30px;">
+                        <label for="name">rating:</label>
+                        <label style="margin-left: 30px;" id="rating">{{obj.rating}}</label>
+                    </div>
+                    <div style="padding-left: 40%; font-size: 30px;">
+                        <label for="name">purchesed:</label>
+                        <label style="margin-left: 30px;" id="purchesed">{{obj.purchesed}}</label>
+                    </div>
+                    <div style="padding-left: 40%; font-size: 30px;">
+                        <button id="previous" ng-click="changeFood(-1)" ng-hide="hidePrev">previous</button>
+                        <button id="next" ng-click="changeFood(1)" ng-hide="hideNext">next</button>
+                    </div>
+                </div>
+                
+            </section>
+        </main>
+    </body>
+</html>

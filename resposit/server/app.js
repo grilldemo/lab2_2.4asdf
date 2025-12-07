@@ -19,8 +19,12 @@ app.use("/client",express.static(path.resolve(__dirname +"/../client/")));
 const port=5000;
 //page listeners(our router)
 
-//service listeners(our data procceses)
+var router=require('./router.js');
+router(app);
 
+//service listeners(our data procceses)
+var services=require('./services.js');
+services(app);
 //listen
 var server=app.listen(port,function(err){
     if(err) throw err;
