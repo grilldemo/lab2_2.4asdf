@@ -7,11 +7,6 @@
 
 
 
-
-
-
-
-
 var t1="name";
 var t2="price";
 var t3="calories";
