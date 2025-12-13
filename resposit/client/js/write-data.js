@@ -1,58 +1,62 @@
 
-function clearall(){
-    document.getElementById("b111").value= "";
-    document.getElementById("b222").value= "";
-    document.getElementById("b333").value= "";
-    document.getElementById("b444").value= "";
-    document.getElementById("b555").value= "";
+var app = angular.module("addFoodsApp", []);
 
-}
+//2.  Create the controller and populate with the functions needed
+app.controller('addFoodsCtrl', function ($scope, $http) {
+    $scope.addResults = "";
 
+    $scope.submitFood = function() {
+        if($scope.name === "" || $scope.price === "" || $scope.calorie === ""|| $scope.rating === ""|| $scope.purchesed === ""|| $scope.category === "") {
+            $scope.addResults = "Name, price, calories, rating, purchesed and category required";
+            return;
+        }
 
-function sendData1(){
-                        
-                        var string1 =document.getElementById("b111").value;
-                        var string2 =document.getElementById("b222").value;
-                        var string3 =document.getElementById("b333").value;
-                        var string4 =document.getElementById("b444").value;
-                        var string5 =document.getElementById("b555").value;
-                        if(!string1||!string2||!string3||!string4||!string5){
-                            alert("please fill in all fields");
-                            return;
-                        }
-                        var jsonObject={
-                            name:string1,
-                            price:string2,
-                            calorie:string3,
-                            rating:string4,
-                            purchesed:string5
-                        }
-                        fetch(libraryURL+"/write-record",{
-                            method:"post",
-                            headers:{
-                                "Content-Type":"application/json"
-                            },
-                            body: JSON.stringify(jsonObject)
-                            
-                        })
-                        .then(Response=>{
-                            if(!Response.ok){
-                                throw new Error("network error: "+Response.statusText);
-                            }
-                            return Response.json();
-                        })
-                        .then(data=>{
-                            alert(data.msg);
-                            if(data.msg==="success"){
-                                console.log("line 47")
-                                //document.getElementById("clearbut").click();
-                            }
-                        })
-                        .catch(error=>{
-                            alert("alert line 51 "+error);
-                        })
-                      
-                      
-                      
-                        //sendData(string1,string2,string3,string4,string5);
-                    }
+        console.log($scope.name);
+        $http({
+            method : "post",
+            url : libraryURL + "/write-record",
+            data: {
+                "name": $scope.name,
+                "category": $scope.category.toLowerCase(),
+                "price": $scope.price,
+                "calorie": $scope.calorie,
+                "rating": $scope.rating,
+                "purchesed": $scope.purchesed
+            }
+        }).then(function(response) {
+            if(response.data.msg === "SUCCESS") {
+                $scope.addResults = "Food is added!";
+                $scope.name = "";
+                $scope.price = "";
+                $scope.calorie = "";
+                $scope.rating = "";
+                $scope.purchesed = "";
+                $scope.category = "";
+            } else {
+                $scope.addResults = response.data.msg;
+            }
+        }, function(response) {
+            alert(response);
+            console.log("I failed");
+        });
+    };
+
+    $scope.startNew = function() {
+        $scope.addResults = "";
+    };
+
+    $scope.clearall=function(){
+
+                $scope.name = "";
+                $scope.price = "";
+                $scope.calorie = "";
+                $scope.rating = "";
+                $scope.purchesed = "";
+                $scope.category = "";
+                $scope.addResults="";
+
+    }
+
+    $scope.addResults = "";
+});
+

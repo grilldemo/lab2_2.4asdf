@@ -29,9 +29,9 @@ app.controller('browseDataControler',function($scope,$http){
 
     $scope.changeFood=function(direction){
             activeFood+=direction;
+            
             $scope.obj=food[activeFood];
            
-            
             $scope.showHide();
         };
         $scope.showHide=function(){

@@ -1,11 +1,11 @@
 <html>
     <head>
-        <link rel="stylesheet" href="css/browse-data.css">
+        <link rel="stylesheet" href="client/css/browse-data.css">
     
         
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-        <script src='js/config.js' ></script>
-        <script src='js/browse-data.js' async></script>
+        <script src='client/js/config.js' ></script>
+        <script src='client/js/browse-data.js' ></script>
     </head>
     <body>
         <main>
@@ -23,30 +23,37 @@
                     <a style="margin-right:5%;" href="/view-data">View Data</a>
                     <a style="margin-right:5%;" href="/browse-data">Browse Data</a>
                 </div>
-                <div ng-app="browseDataApp" ng-controller="browseDataControler">
-                    <div style="padding-left: 40%; font-size: 30px;">
-                        <label for="name">Name:</label>
-                        <label style="margin-left: 30px;" id="name">{{obj.name}}</label>
-                    </div>
-                    <div style="padding-left: 40%; font-size: 30px;">
-                        <label for="name">Price:</label>
-                        <label style="margin-left: 30px;" id="price">{{obj.price}}</label>
-                    </div>
-                    <div style="padding-left: 40%; font-size: 30px;">
-                        <label for="name">Calories:</label>
-                        <label style="margin-left: 30px;" id="calorie">{{obj.calorie}}</label>
-                    </div>
-                    <div style="padding-left: 40%; font-size: 30px;">
-                        <label for="name">rating:</label>
-                        <label style="margin-left: 30px;" id="rating">{{obj.rating}}</label>
-                    </div>
-                    <div style="padding-left: 40%; font-size: 30px;">
-                        <label for="name">purchesed:</label>
-                        <label style="margin-left: 30px;" id="purchesed">{{obj.purchesed}}</label>
-                    </div>
-                    <div style="padding-left: 40%; font-size: 30px;">
-                        <button id="previous" ng-click="changeFood(-1)" ng-hide="hidePrev">previous</button>
-                        <button id="next" ng-click="changeFood(1)" ng-hide="hideNext">next</button>
+                <div ng-app="browseDataApp" ng-controller="browseDataControler" style="padding-left: 40%; font-size: 30px;">
+                    <table style="border: 5px solid red;background-color: orange;font-size: 40px;">
+                        <tr>
+                            <th style="color: red;border-bottom: 5px solid red;border-right: 5px solid red;">name</th>
+                            <th style="color: white;border-bottom: 5px solid red;border-right: 5px solid red;">{{obj.name}}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: red;border-bottom: 5px solid red;border-right: 5px solid red;">price</th>
+                            <th style="color: white;border-bottom: 5px solid red;border-right: 5px solid red;">{{obj.price}}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: red;border-bottom: 5px solid red;border-right: 5px solid red;">calories</th>
+                            <th style="color: white;border-bottom: 5px solid red;border-right: 5px solid red;">{{obj.calorie}}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: red;border-bottom: 5px solid red;border-right: 5px solid red;">rating</th>
+                            <th style="color: white;border-bottom: 5px solid red;border-right: 5px solid red;">{{obj.rating}}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: red;border-bottom: 5px solid red;border-right: 5px solid red;">purchesed</th>
+                            <th style="color: white;border-bottom: 5px solid red;border-right: 5px solid red;">{{obj.purchesed}}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: red;border-bottom: 5px solid red;border-right: 5px solid red;">category</th>
+                            <th style="color: white;border-bottom: 5px solid red;border-right: 5px solid red;">{{obj.category}}</th>
+                        </tr>
+                    </table>
+                   
+                    <div >
+                        <button id="previous" ng-click="changeFood(-1)" ng-hide="hidePrev" style="font-size: 30px;background-color:orange;color: red;border: 5px solid red;">previous</button>
+                        <button id="next" ng-click="changeFood(1)"  ng-hide="hideNext" style="font-size: 30px;background-color:orange;color: red;border: 5px solid red;">next</button>
                     </div>
                 </div>
                 

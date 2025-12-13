@@ -26,14 +26,15 @@ const services= function(app){
             price:req.body.price,
             calorie:req.body.calorie,
             rating:req.body.rating,
-            purchesed:req.body.purchesed
+            purchesed:req.body.purchesed,
+            category:req.body.category
         }
         
         try{
             const conn=await client.connect();
             const db=conn.db("JoesGrill");
             const coll=db.collection("foodList");
-
+            
             await coll.insertOne(foodData);
 
             await conn.close();
@@ -44,41 +45,7 @@ const services= function(app){
         
         
         
-        /*
-        var foodList=[];
-
-        if(fs.existsSync(database_file)){
-            fs.readFile(database_file,"utf8",function(err,data){
-                if(err){
-                    res.send(JSON.stringify({msg:err}));
-                }else{
-                    foodList=JSON.parse(data);
-                    foodList.push(foodData);
-
-                    fs.writeFile(database_file,JSON.stringify(foodList),
-                    function(err){
-                        if(err){
-                            res.send(JSON.stringify({msg:err}));
-                        }else{
-                            res.send(JSON.stringify({msg:"success"}));
-                        }
-                    });
-                }
-            });
-        }else{
-            foodList.push(foodData);
-
-             fs.writeFile(database_file,JSON.stringify(foodList),
-                    function(err){
-                        if(err){
-                            res.send(JSON.stringify({msg:err}));
-                        }else{
-                            res.send(JSON.stringify({msg:"success"}));
-                        }
-                    });
-
-        }
-    */
+       
     })
 
     app.get("/get-records",async function(req,res){
@@ -100,26 +67,11 @@ const services= function(app){
            return res.json({msg:"error: "+err});
         }
 
-        /*
-        if(fs,fs.existsSync(database_file)){
-            fs.readFile(database_file,"utf-8",function(err,data){
-                if(err){
-                    res.json({msg:err});
-                }else{
-                    foodListArray=JSON.parse(data);
-
-                    res.json({msg:"SUCCESS",foodList:foodListArray});
-                }
-            })
-        }else{
-            foodListArray=[]
-            res.join({msg:"SUCCESS",foodList:foodListArray})
-        }
-    */
+       
     });
     app.delete('/delete-record',async function(req,res){
         
-        var foodIDSentFromClient = req.query.ID;
+        var foodIDSentFromClient = req.query.foodID;
 
         //2. Convert id string to a MongoID object
         var foodIDAsMongoObject= ObjectId.createFromHexString(foodIDSentFromClient);
@@ -139,38 +91,64 @@ const services= function(app){
             return res.json({msg:"error: "+err});
         }
 
-        /*
-        fs.readFile(database_file,"utf-8",function(err,data){
-            if(err){
-                    console.log("before parseing line 76");    
-                res.json({msg:err});
-                }else{
-                    console.log("before parseing line 78");
-                    foodListArray=JSON.parse(data);
-                                        console.log("after parseing line 80");
-                    for(var i=0;i<foodListArray.length;i++){
-                        if(foodListArray[i].id===req.body.id){
-                        
-                            foodListArray.splice(i,1);
-                            break;
-                            
-
-                        }
-                    }
-                    fs.writeFile(database_file,JSON.stringify(foodListArray),
-                    function(err){
-                        if(err){
-                            res.send(JSON.stringify({msg:err}));
-                        }else{
-                            res.send(JSON.stringify({msg:"SUCCESS"}));
-                        }
-                    });
-                }
-        });
-        */
+        
     });
+    app.get("/get-foodsByCategory", async function(req, res) {
+        //1.  Capture data sent from client (see line 34 in spellsTable.js for JSON object name)
+        var categoryValueSentFromClient = req.query.category;
+
+        //2.  Filter by the data value sent from the client.
+        //       Note: type = "", is sent when ALL is selected.
+        var search = (categoryValueSentFromClient === "") ? { } : {category: categoryValueSentFromClient};
+
+        //3. Set up sort by name ascending
+            const orderBy={name:1};
+        //4.  Connect, find data, close database, return results or error
+        try{
+            const conn=await client.connect();
+            const db=conn.db("JoesGrill");
+            const coll=db.collection("foodList");
+
+            const foodList=await coll.find(search).sort(orderBy).toArray();
+
+            await conn.close();
+
+             return res.json({msg:"SUCCESS",foodList:foodList});
+        }catch{
+            return res.json({msg:"error: "+err});
+        }
+    });
+    app.put('/update-food', async function(req, res) {
+        //1.  Bring in the data from the client (see spellsTable.js, line 96 for JSON object names)
+        var IDSentFromClient = req.body.foodID;
         
 
+        //2. Create JSON with the data sent
+            var updateData={
+                $set:{
+                    name:req.body.name,
+                    price:req.body.price,
+                    calorie:req.body.calorie,
+                    rating:req.body.rating,
+                    purchesed:req.body.purchesed,
+                    category:req.body.category
+                }
+            }
+        //3. Convert id string to a MongoID object
+            var IDAsMongoObject=ObjectId.createFromHexString(IDSentFromClient);
+        //4. Create search with MongoID
+            const search={_id:IDAsMongoObject};
+        //5.  Connect and update data, close database, return success or failure
+
+        const conn=await client.connect();
+        const db=conn.db("JoesGrill");
+        const coll=db.collection("foodList");
+
+        await coll.updateOne(search,updateData);
+
+        await conn.close();
+        return res.json({msg:"SUCCESS"});
+});
 
 }
 

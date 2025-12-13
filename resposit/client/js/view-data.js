@@ -1,136 +1,156 @@
 
-//var dataset ='[{ "name":"coke","price":"1.99","calorie":"50","rating":"4.5","purchesed":"140"},{ "name":"steak","price":"20.00","calorie":"500","rating":"4.0","purchesed":"30"},{ "name":"chicken breast","price":"14.99","calorie":"600","rating":"4.7","purchesed":"29"},{ "name":"grilled aspargus","price":"5.99","calorie":"100","rating":"3.7","purchesed":"50"},{ "name":"burger","price":"10.99","calorie":"400","rating":"4.9","purchesed":"70"}]';
+var app = angular.module("GrillApp", []);
 
-//const  reser  = require('express');
-//const { response }=require('express');
-//const jsonObj = JSON.parse(dataset);
-
-
-
-var t1="name";
-var t2="price";
-var t3="calories";
-var t4="rating";
-var t5="purchesed";
-var t6="";
-
-var htmlstring="";
-
-//padding-left: 130%; font-size: 30px;background-color: red;
-
-main();
-
-function main(){
-    //console.log(jsonObj);
-    //console.log(jsonObj.length);
-    //console.log(JSON.stringify(jsonObj));
-    retriveData();
-    
-    //displaytable();
-}
-
-function displaytable(jsonObj){
-    htmlstring="";
-    htmlstring+="<tr>"
-        htmlstring+="<td style='padding-left: 60%;padding-right: 0%; font-size: 30px;'>"+t1+"</td>";
-        htmlstring+="<td style='padding-left: 70%; font-size: 30px;'>"+t2+"</td>";   
-        htmlstring+="<td style='padding-left: 80%; font-size: 30px;'>"+t3+"</td>";    
-        htmlstring+="<td style='padding-left: 90%; font-size: 30px;'>"+t4+"</td>";
-        htmlstring+="<td style='padding-left: 100%; font-size: 30px;'>"+t5+"</td>";  
-        htmlstring+="<td style='padding-left: 110%; font-size: 30px;'>"+t6+"</td>";
-    htmlstring+="</tr>"
-    for(var i=0;i<jsonObj.length; i++){
-        htmlstring+="<tr>"
-            htmlstring+="<td style='padding-left: 60%;padding-right: 0%; font-size: 30px;'>"+jsonObj[i].name+"</td>"
-            htmlstring+="<td style='padding-left: 70%; font-size: 30px;'>"+jsonObj[i].price+"</td>"   
-            htmlstring+="<td style='padding-left: 80%; font-size: 30px;'>"+jsonObj[i].calorie+"</td>"    
-            htmlstring+="<td style='padding-left: 90%; font-size: 30px;'>"+jsonObj[i].rating+"</td>"
-            htmlstring+="<td style='padding-left: 100%; font-size: 30px;'>"+jsonObj[i].purchesed+"</td>"  
-            htmlstring+="<td style='padding-left: 110%; font-size: 30px;'><button class='delete-button' data-id="+jsonObj[i].id+">delete</button></td>"
-        htmlstring+="</tr>"
-    }
-    var tablebObj =document.getElementById("listTable");
-    tablebObj.innerHTML= htmlstring;
-
-
-
-}
-
-function inputTable(b1,b2,b3,b4,b5){
-
-
-
-    var inputdata={};
-    inputdata.name=b1;
-    inputdata.price=b2;
-    inputdata.calorie=b3;
-    inputdata.rating=b4;
-    inputdata.purchesed=b5;
-    jsonObj.push(inputdata);
-    displaytable();
-}
-
-function retriveData(){
-
-    //get datfrom datbase
-
-    fetch(libraryURL+"/get-records",{
-        method:"GET"
-    })
-    .then(Response=>{
-        if(!Response.ok){
-            throw new Error("network error: "+Response.statusText);
-        }
-        return Response.json();
-    })
-
-    .then(data=>{
-        if(data.msg="SUCCESS"){
-            displaytable(data.foodList);
-            activateDelete();
-        }
-    })
-    .catch(err=>{
-        alert("error: "+err);
-    })
-
-}
-
-function activateDelete() {
-// Capture all html items tagged with the delete-button class
-    const deleteButtons = document.querySelectorAll('.delete-button');
-//Loop through all the deleteButtons and create a listener for each
-//one
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const deleteID = this.getAttribute("data-id"); // <-- from
-//the html button object
-        handleDelete(deleteID); //You will write this function.
+//2.  Create the controller and populate with the functions needed
+//record finished
+app.controller('GrillCtrl', function ($scope, $http) {
+    //$scope.spells = [];
+    //$scope.types = [];
+    $scope.foods = [];
+    $scope.categories = [];
+    $scope.get_records = function() {
+        $http({
+            method : "get",
+            url : libraryURL + "/get-records"
+        }).then(function(response) {
+            if(response.data.msg === "SUCCESS") {
+                // spellTableData = response.data.spells;
+                $scope.foods = response.data.foodList;
+                $scope.categories = getCategory(response.data.foodList);
+                $scope.selectedcategory = $scope.categories[0];
+            } else {
+                console.log(response.data.msg);
+            }
+        }, function(response) {
+            alert(response);
+            console.log("I failed");
         });
-    });
-}
-function  handleDelete(deleteID){
-    fetch(libraryURL+"/delete-record",{
-        method:"DELETE",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({id:deleteID})
-    })
-    .then(Response=>{
-         if(!Response.ok){
-            throw new Error(" line 124 network error: "+Response.statusText);
-            
-        }
-        return Response.json();
-    })
-    .then(data=>{
-        if(data.msg="SUCCESS"){
-             retriveData()
-        }
-       
-    })
-    .catch(error=>{
-        alert("line 136 error: "+error);
-        console.log("error is here");
-    });
+    };
+    //redraw finished
+    $scope.redrawTable = function() {
+        var category = $scope.selectedcategory.value;
+        console.log("redraw");
+        $http({
+            method : "get",
+            url : libraryURL + "/get-foodsByCategory",
+            params: {category: category}
+        }).then(function(response) {
+            if(response.data.msg === "SUCCESS") {
+				console.log("here");
+                // spellTableData = response.data.spells;
+                $scope.foods = response.data.foodList;
+            } else {
+                console.log(response.data.msg);
+            }
+        }, function(response) {
+            alert(response);
+            console.log("I failed");
+        });
+    }
+    //delete finished
+    $scope.deleteFood = function(foodID) {
+        console.log(foodID);
+        $http({
+            method : "delete",
+            url : libraryURL + "/delete-record",
+            params: {foodID: foodID}
+        }).then(function(response) {
+            if(response.data.msg === "SUCCESS") {
+                $scope.redrawTable();
+            } else {
+                console.log(response.data.msg);
+            }
+        }, function(response) {
+            alert(response);
+            console.log("I failed the Delete");
+        });
+    }
+    //edit finished
+    $scope.editFood = function(foodNumber) {
+        $scope.name = $scope.foods[foodNumber].name;
+        $scope.price = $scope.foods[foodNumber].type;
+        $scope.calorie = $scope.foods[foodNumber].effect;
+        $scope.rating = $scope.foods[foodNumber].rating;
+        $scope.purchesed = $scope.foods[foodNumber].purchesed;
+        $scope.category = $scope.foods[foodNumber].category;
+        $scope.foodID = $scope.foods[foodNumber]['_id'];
 
+        console.log("ID set: " + $scope.foodID);
+        $scope.hideTable = true;
+        $scope.hideForm = false;
+    }
+
+	$scope.cancelUpdate = function() {
+		$scope.hideForm = true;
+		$scope.hideTable = false;
+
+	}
+    //update finsished
+    $scope.updateFood = function() {
+        if($scope.name === "" || $scope.price === "" || $scope.calorie === ""|| $scope.rating === ""|| $scope.purchesed === ""|| $scope.category === "") {
+            $scope.addResults = "Name, price, calories, rating, purchesed and category required";
+            return;
+        }
+
+        console.log("ID check: " + $scope.foodID);
+
+        $http({
+            method : "put",
+             url : libraryURL + "/update-food",
+             data: {
+                "foodID": $scope.foodID,
+                "name": $scope.name,
+                "price": $scope.price,
+                "calorie": $scope.calorie,
+                "rating": $scope.rating,
+                "purchesed": $scope.purchesed,
+                "category": $scope.category.toLowerCase()
+            }
+        }).then(function(response) {
+            if(response.data.msg === "SUCCESS") {
+                $scope.hideForm = true;
+                $scope.hideTable = false;
+
+                $scope.redrawTable();
+                
+                $scope.name = "";
+                $scope.price = "";
+                $scope.calorie = "";
+                $scope.rating = "";
+                $scope.purchesed = "";
+                $scope.category = "";
+            } else {
+                $scope.addResults = response.data.msg;
+            }
+        }, function(response) {
+            alert(response);
+            console.log("I failed");
+        });
+
+    }
+
+    $scope.get_records();
+});
+//
+//A handy function we will use to get the list of types
+function getCategory(foodTableData) {
+    var categoryExists;  //This is used to prevent duplicates
+
+    categoryArray = [{value:"", display:"ALL"}];
+	
+	//Loop through the JSON array returned from the server
+    for(var i=0; i<foodTableData.length; i++) {
+		//Check to see if the type in the ith record has already been captured
+        categoryExists = categoryArray.find(function(element) {
+            return element.value === foodTableData[i].category;
+        })    
+        if(categoryExists) {
+            continue;  //If already captured, move on to next element
+        } else {
+			//If not captured, add the type and uppercase type to the types array
+            categoryArray.push({value: foodTableData[i].category, display: foodTableData[i].category.toUpperCase()});
+        }
+    }
+
+    return categoryArray
 }

@@ -1,10 +1,23 @@
 <html>
     <head>
-        <link rel="stylesheet" href="css/view-data.css">
-    
+        <link rel="stylesheet" href="client/css/view-data.css">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src='js/config.js' ></script>
-        <script src='js/view-data.js' async></script>
+        <script src='client/js/config.js' ></script>
+        <script src='client/js/view-data.js' ></script>
+        <style>
+        
+         th{
+            border-right: 5px solid red;
+            border-bottom: 5px solid red;
+         }
+         td{
+            border-right: 5px solid red;
+            border-bottom: 5px solid red;
+         }
+        
+    </style>
     </head>
     <body>
         <main>
@@ -22,10 +35,96 @@
                     <a style="margin-right:5%;" href="/view-data">View Data</a>
                     <a style="margin-right:5%;" href="/browse-data">Browse Data</a>
                 </div>
-                <div>
-                    <table id ="listTable" style ="font-size: 30px;margin-right: 30%;">
+                <div data-ng-app="GrillApp" data-ng-controller="GrillCtrl" data-ng-init="hideForm=true">
+                    <section data-ng-hide="hideTable">
+                        <div >
+                        <label for="groupby" style="margin-left: 30%;font-size: 40px;background-color:orange;color: red">category:</label>
+                        <select id="groupby" 
+                        data-ng-model="selectedcategory"  
+                        data-ng-options="category.display for category in categories" 
+                        data-ng-change="redrawTable()"
+                        style="font-size: 30px;background-color:red"
+                        >
+                        </select>
+                        </div>
+                        
+                        <div style="margin-left: 30%;font-size: 50px">
+                            <table style="border: 5px solid red;background-color: orange;">
+                                <tr style="color: red;font-size: 40px;background-color:orange;">
+                                    <th>Name</th>
+                                    <th>category</th>
+                                    <th>price</th>
+                                    <th>calories</th>
+                                    <th>rating</th>
+                                    <th>purchesed</th>
+                                </tr>
 
-                    </table>
+                                <tr data-ng-repeat="obj in foods" style="font-size: 40px;color: white;">
+                                    <td>{{ obj.name }}</td>
+                                    <td>{{ obj.category }}</td>
+                                    <td>{{ obj.price }}</td>
+                                    <td>{{ obj.calorie}}</td>
+                                    <td>{{ obj.rating }}</td>
+                                    <td>{{ obj.purchesed }}</td>
+                                    <td>
+                                        <button data-ng-click="deleteFood(obj['_id'])" style="font-size: 30px;background-color:red;border-top: 5px solid red;">DELETE</button> 
+                                    </td>
+                                    <td>
+                                        <button data-ng-click="editFood($index)" style="font-size: 30px;background-color:red;border-top: 5px solid red;">EDIT</button> 
+                                    </td>
+                                    </tr>
+                            </table>
+                        </div>
+                    
+                    </section>
+                    <section data-ng-hide="hideForm">
+                        <div style="margin-left: 35%;font-size: 30px">
+                            <label data-ng-model="foodID" hidden></label>
+                            
+                            <table style="border: 5px solid red;background-color: orange;font-size: 40px;">
+                                <tr>
+                                    <th for="name" style="color: red;border-bottom: 5px solid red;border-right: 5px solid red;">name</th>
+                                    <th><input type="text" id="name" data-ng-model="name" data-ng-change=startNew() style="font-size: 30px;border: 5px solid red;"></th>
+                                </tr>
+                                <tr>
+                                    <th for="category" style="color: red;border-bottom: 5px solid red;border-right: 5px solid red;">category</th>
+                                    <th><input type="text" id="category" data-ng-model="category" data-ng-change=startNew() style="font-size: 30px;border: 5px solid red;"></th>
+                                </tr>
+                                <tr>
+                                    <th for="price" style="color: red;border-bottom: 5px solid red;border-right: 5px solid red;">price</th>
+                                    <th><input type="text" id="price" data-ng-model="price" data-ng-change=startNew() style="font-size: 30px;border: 5px solid red;"></th>
+                                </tr>
+                                <tr>
+                                    <th for="calorie" style="color: red;border-bottom: 5px solid red;border-right: 5px solid red;">calories</th>
+                                    <th><input type="text" id="calorie" data-ng-model="calorie" data-ng-change=startNew() style="font-size: 30px;border: 5px solid red;"></th>
+                                </tr>
+                                <tr>
+                                    <th for="rating" style="color: red;border-bottom: 5px solid red;border-right: 5px solid red;">rating</th>
+                                    <th><input type="text" id="rating" data-ng-model="rating" data-ng-change=startNew() style="font-size: 30px;border: 5px solid red;"></th>
+                                </tr>
+                                <tr>
+                                    <th for="purchesed" style="color: red;border-bottom: 5px solid red;border-right: 5px solid red;">purchesed</th>
+                                    <th><input type="text" id="purchesed" data-ng-model="purchesed" data-ng-change=startNew() style="font-size: 30px;border: 5px solid red;"></th>
+                                </tr>
+                            </table>
+                            
+                            
+
+                            <div >
+                                <div style="float: left; clear: right; margin-left: 30px">
+                                    <button id="submit" data-ng-click="updateFood()" style="font-size: 30px;background-color:orange;color: red;border: 5px solid red;">Update</button>
+                                
+                                </div>
+                            </div>
+
+                            <div >
+                                <div style="float: left; clear: right; margin-left: 30px">
+                                    <button id="cancelButton" data-ng-click="cancelUpdate()" style="font-size: 30px;background-color:orange;color: red;border: 5px solid red;">Cancel</button>
+                                </div>
+                            </div>
+                            <div style="float: left; clear: left; margin-top: 20px; font-size: 24px; color:green;">{{addResults}}</div>
+                        </div>
+                    </section>
                 </div>
             </section>
         </main>
